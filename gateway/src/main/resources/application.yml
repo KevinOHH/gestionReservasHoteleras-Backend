@@ -1,0 +1,50 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+
+            # Authorization Server (componente independiente, no microservicio)
+            #- id: auth
+              #uri: http://localhost:9001
+              #predicates:
+               # - Path=/auth/**
+
+            # Microservicio Usuario (puerto 8083)
+            - id: usuario
+              uri: lb://usuario
+              predicates:
+                - Path=/api/usuarios/**
+
+            # Microservicio Huesped (puerto 8082)
+            - id: huesped
+              uri: lb://huesped
+              predicates:
+                - Path=/api/huespedes/**
+
+            # Microservicio Habitaciones (puerto 8085)
+            - id: habitacion
+              uri: lb://habitacion
+              predicates:
+                - Path=/api/habitaciones/**
+
+            # Microservicio Reservas (puerto 8085 o el que uses)
+            - id: reserva
+              uri: lb://reserva
+              predicates:
+                - Path=/api/reservas/**
+
+    loadbalancer:
+      enabled: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
