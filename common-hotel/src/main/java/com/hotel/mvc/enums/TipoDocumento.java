@@ -23,4 +23,4 @@ public enum TipoDocumento {
         throw new IllegalArgumentException("Tipo de documento no valido: '" + nombre +
         		"'. Valores aceptados: INE, PASAPORTE, LICENCIA");
     }
-}
+} 
