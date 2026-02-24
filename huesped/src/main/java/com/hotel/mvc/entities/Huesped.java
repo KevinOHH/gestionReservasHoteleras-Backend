@@ -1,5 +1,9 @@
 package com.hotel.mvc.entities;
 
+import com.hotel.mvc.enums.EstadoRegistro;
+import com.hotel.mvc.enums.Nacionalidad;
+import com.hotel.mvc.enums.TipoDocumento;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,12 +32,15 @@ public class Huesped {
     @Column(nullable = false, length = 10)
     private String telefono;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private String documento;
-
+    private TipoDocumento documento; 
+    
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private String nacionalidad;
+    private Nacionalidad nacionalidad;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private String estado;
+    private EstadoRegistro estado;  
 }
