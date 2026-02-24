@@ -4,8 +4,7 @@ public enum TipoHabitacion {
 
     INDIVIDUAL,
     DOBLE,
-    TRIPLE,
-    CUADRUPLE;
+    SUITE;
 
     public static TipoHabitacion fromString(String value) {
         if (value == null || value.trim().isEmpty()) {

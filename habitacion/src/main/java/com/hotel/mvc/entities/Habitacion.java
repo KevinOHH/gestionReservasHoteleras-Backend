@@ -1,6 +1,8 @@
 package com.hotel.mvc.entities;
 
 import com.hotel.mvc.enums.EstadoHabitacion;
+import com.hotel.mvc.enums.TipoHabitacion;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -19,7 +21,7 @@ public class Habitacion {
     private String numero;                  // VARCHAR2(5)
 
     @Column(nullable = false, length = 50)
-    private String tipo;                    // VARCHAR2(50)
+    private TipoHabitacion tipo;                    // VARCHAR2(50)
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;              // NUMBER(10,2)
