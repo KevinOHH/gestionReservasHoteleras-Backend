@@ -12,8 +12,7 @@ public record HabitacionRequest(
         @Size(max = 5, message = "El número no puede exceder 5 caracteres")
         Integer numero,
 
-        @NotBlank(message = "El tipo es obligatorio")
-        @Pattern(regexp = "SENCILLA|DOBLE|SUITE", message = "El tipo debe ser SENCILLA, DOBLE o SUITE")
+        @NotNull(message = "El tipo es obligatorio(INDIVIDUAL,DOBLE, SUITE")
         TipoHabitacion tipo,
 
         @NotNull(message = "El precio es obligatorio")
