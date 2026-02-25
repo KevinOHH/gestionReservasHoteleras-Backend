@@ -11,7 +11,7 @@ spring:
         webflux:
           routes:
 
-            # Authorization Server (componente independiente, no microservicio)
+            # Authorization Server 
             #- id: auth
               #uri: http://localhost:9001
               #predicates:
@@ -35,7 +35,7 @@ spring:
               predicates:
                 - Path=/api/habitaciones/**
 
-            # Microservicio Reservas (puerto 8085 o el que uses)
+            # Microservicio Reservas (puerto 8085)
             - id: reserva
               uri: lb://reserva
               predicates:
