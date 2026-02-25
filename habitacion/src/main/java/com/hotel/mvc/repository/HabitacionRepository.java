@@ -2,9 +2,6 @@ package com.hotel.mvc.repository;
 
 import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
-
-import jakarta.validation.constraints.NotBlank;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,11 +9,15 @@ import java.util.Optional;
 
 public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
 
-    List<Habitacion> findAllByEstado(String estado);
+    
+    List<Habitacion> findAllByEstadoHabitacion(EstadoHabitacion estadoHabitacion);
 
-    Optional<Habitacion> findByIdAndEstado(Long id, String estado);
+    
+    Optional<Habitacion> findByIdAndEstadoHabitacion(Long id, EstadoHabitacion estadoHabitacion);
 
-    boolean existsByNumeroAndEstado(String numero, String estado);
+    
+    boolean existsByNumeroAndEstadoHabitacion(Integer numero, EstadoHabitacion estadoHabitacion);
 
-    boolean existsByNumeroAndEstadoAndIdNot(String numero, String estado, Long id);
+   
+    boolean existsByNumeroAndEstadoHabitacionAndIdNot(Integer numero, EstadoHabitacion estadoHabitacion, Long id);
 }

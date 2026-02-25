@@ -10,7 +10,7 @@ public record HabitacionRequest(
 
         @NotBlank(message = "El número es obligatorio")
         @Size(max = 5, message = "El número no puede exceder 5 caracteres")
-        String numero,
+        Integer numero,
 
         @NotBlank(message = "El tipo es obligatorio")
         @Pattern(regexp = "SENCILLA|DOBLE|SUITE", message = "El tipo debe ser SENCILLA, DOBLE o SUITE")

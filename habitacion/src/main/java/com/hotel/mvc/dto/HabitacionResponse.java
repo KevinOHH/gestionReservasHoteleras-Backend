@@ -6,11 +6,10 @@ import com.hotel.mvc.enums.EstadoHabitacion;
 import com.hotel.mvc.enums.TipoHabitacion;
 
 public record HabitacionResponse(
-        Long id,
-        String numero,
+		Long id,
+        Integer numero,                 
         TipoHabitacion tipo,
         BigDecimal precio,
         Integer capacidad,
-        EstadoHabitacion estadoHabitacion,
-        String estado
+        EstadoHabitacion estadoHabitacion
 ) {}
