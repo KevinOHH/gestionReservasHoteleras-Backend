@@ -6,6 +6,7 @@ public record HuespedResponse(
         String apellido,
         String email,
         String telefono,
-        String documento,
-        String nacionalidad
+        String tipoDocumento,
+        String nacionalidad,
+        String estadoRegistro //para fines de pruebas
 ) {}

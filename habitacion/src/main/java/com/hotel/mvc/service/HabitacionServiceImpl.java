@@ -1,26 +1,35 @@
 package com.hotel.mvc.service;
 
+import com.hotel.mvc.client.ReservaClient;
 import com.hotel.mvc.dto.HabitacionRequest;
 import com.hotel.mvc.dto.HabitacionResponse;
 import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
+import com.hotel.mvc.enums.EstadoRegistro;
+import com.hotel.mvc.exceptions.ResourceNotFoundException;
 import com.hotel.mvc.mapper.HabitacionMapper;
 import com.hotel.mvc.repository.HabitacionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class HabitacionServiceImpl implements HabitacionService {
 
     private final HabitacionRepository habitacionRepository;
     private final HabitacionMapper habitacionMapper;
-
+    private final ReservaClient reservaClient;
+    
     @Override
     public HabitacionResponse registrar(HabitacionRequest request) {
 
@@ -52,7 +61,8 @@ public class HabitacionServiceImpl implements HabitacionService {
 
     @Override
     public List<HabitacionResponse> listar() {
-        return habitacionRepository.findAllByEstadoHabitacion(EstadoHabitacion.DISPONIBLE)
+        //return habitacionRepository.findAllByEstadoHabitacion(EstadoHabitacion.DISPONIBLE)
+    	return habitacionRepository.findAllByEstado(EstadoRegistro.ACTIVO)
                 .stream()
                 .map(habitacionMapper::toResponse)
                 .toList();
@@ -108,6 +118,14 @@ public class HabitacionServiceImpl implements HabitacionService {
         habitacion.setEstadoHabitacion(EstadoHabitacion.LIMPIEZA);
         habitacionRepository.save(habitacion);
     }
+    
+    @Override
+	public HabitacionResponse findByHabitacionId(Long id) {
+		return habitacionMapper.toResponse(
+	            habitacionRepository.findById(id)
+	                .orElseThrow(() -> new ResourceNotFoundException("Habitación con id " + id + " no encontrada"))
+	        );
+	}
 
     // ── Helper ────────────────────────────────────────────────────────────────
 
@@ -116,4 +134,24 @@ public class HabitacionServiceImpl implements HabitacionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Habitación con id " + id + " no encontrada"));
     }
+
+	@Override
+	@Transactional
+	public HabitacionResponse actualizarDisponibilidadHabitacion(Long idHabitacion, Long idDisponibilidad,
+			Long idReservaActual) {
+		log.info("Cambiando habitacion {} a estado {}", idHabitacion, idDisponibilidad);
+		Habitacion habitacion = getActivaOrThrow(idHabitacion);
+		
+		if (idDisponibilidad.equals(1L)) {
+			if (idReservaActual != null) {
+				reservaClient.habitacionTieneReservasConfirmadasoEnCursoSinReservaActual(idHabitacion, idReservaActual);
+			} else {
+				reservaClient.habitacionTieneReservasConfirmadasoEnCurso(idHabitacion);
+			}
+		}
+		
+		habitacion.setEstadoHabitacion(EstadoHabitacion.fromCodigo(idDisponibilidad));
+		return habitacionMapper.toResponse(habitacion);
+	}
+	
 }

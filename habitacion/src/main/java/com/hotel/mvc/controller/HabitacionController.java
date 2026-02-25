@@ -4,7 +4,13 @@ import com.hotel.mvc.controllers.CommonController;
 import com.hotel.mvc.dto.HabitacionRequest;
 import com.hotel.mvc.dto.HabitacionResponse;
 import com.hotel.mvc.service.HabitacionService;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,4 +20,20 @@ public class HabitacionController extends CommonController<HabitacionRequest, Ha
     public HabitacionController(HabitacionService service) {
         super(service);
     }
+    
+    @GetMapping("/id-habitacion/{id}")
+    public ResponseEntity<HabitacionResponse> obtenerPorHabitacionId(@PathVariable Long id) {
+        return ResponseEntity.ok(((HabitacionService) service).findByHabitacionId(id));
+    }
+    
+    @PutMapping("/{idHabitacion}/disponibilidad/{idDisponibilidad}")
+    public ResponseEntity<HabitacionResponse> actualizarDisponibilidadHabitacion(
+    		@PathVariable Long idHabitacion, 
+	        @PathVariable Long idDisponibilidad,
+	        @RequestParam(required = false) Long idReservaActual // Parámetro opcional
+	) {
+    	return ResponseEntity.ok(service.actualizarDisponibilidadHabitacion(idHabitacion, idDisponibilidad, idReservaActual));
+    }
+    
+    
 }

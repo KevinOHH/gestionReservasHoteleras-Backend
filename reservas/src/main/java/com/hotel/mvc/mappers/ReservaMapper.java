@@ -83,7 +83,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
 				huesped.nombre(),
 				huesped.email(),
 				huesped.telefono(),
-				huesped.documento(),
+				huesped.tipoDocumento(),
 				huesped.nacionalidad()
 				);
 	}
