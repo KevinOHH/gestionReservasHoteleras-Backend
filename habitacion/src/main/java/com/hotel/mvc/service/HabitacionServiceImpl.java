@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -22,17 +23,36 @@ public class HabitacionServiceImpl implements HabitacionService {
 
     @Override
     public HabitacionResponse registrar(HabitacionRequest request) {
-        if (habitacionRepository.existsByNumeroAndEstado(request.numero(), "ACTIVO"))
+
+        
+        if (request.numero() <= 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El número debe ser mayor a 0");
+
+        if (request.capacidad() < 1)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La capacidad mínima es 1");
+
+        if (request.precio() == null || request.precio().compareTo(BigDecimal.ZERO) <= 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio debe ser mayor a 0");
+
+        if (request.tipo() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo de habitación es obligatorio");
+
+        
+        if (habitacionRepository.existsByNumeroAndEstadoHabitacion(request.numero(), EstadoHabitacion.DISPONIBLE))
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Ya existe una habitación activa con el número " + request.numero());
 
         Habitacion habitacion = habitacionMapper.toEntity(request);
+
+        
+        habitacion.setEstadoHabitacion(EstadoHabitacion.DISPONIBLE);
+
         return habitacionMapper.toResponse(habitacionRepository.save(habitacion));
     }
 
     @Override
     public List<HabitacionResponse> listar() {
-        return habitacionRepository.findAllByEstado("ACTIVO")
+        return habitacionRepository.findAllByEstadoHabitacion(EstadoHabitacion.DISPONIBLE)
                 .stream()
                 .map(habitacionMapper::toResponse)
                 .toList();
@@ -47,15 +67,32 @@ public class HabitacionServiceImpl implements HabitacionService {
     public HabitacionResponse actualizar(HabitacionRequest request, Long id) {
         Habitacion habitacion = getActivaOrThrow(id);
 
-        if (habitacionRepository.existsByNumeroAndEstadoAndIdNot(request.numero(), "ACTIVO", id))
+        
+        if (request.numero() <= 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El número debe ser mayor a 0");
+
+        if (request.capacidad() < 1)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La capacidad mínima es 1");
+
+        if (request.precio() == null || request.precio().compareTo(BigDecimal.ZERO) <= 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio debe ser mayor a 0");
+
+        if (request.tipo() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo de habitación es obligatorio");
+
+       
+        if (habitacionRepository.existsByNumeroAndEstadoHabitacionAndIdNot(request.numero(), EstadoHabitacion.DISPONIBLE, id))
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Ya existe una habitación activa con el número " + request.numero());
 
+      
         if (habitacion.getEstadoHabitacion().estaOcupada())
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "No se puede modificar una habitación OCUPADA");
 
+       
         habitacionMapper.updateEntity(habitacion, request);
+
         return habitacionMapper.toResponse(habitacionRepository.save(habitacion));
     }
 
@@ -67,15 +104,16 @@ public class HabitacionServiceImpl implements HabitacionService {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "No se puede eliminar una habitación OCUPADA");
 
-        habitacion.setEstado("ELIMINADO");
+        
+        habitacion.setEstadoHabitacion(EstadoHabitacion.LIMPIEZA);
         habitacionRepository.save(habitacion);
     }
 
     // ── Helper ────────────────────────────────────────────────────────────────
 
     private Habitacion getActivaOrThrow(Long id) {
-        return habitacionRepository.findByIdAndEstado(id, "ACTIVO")
+        return habitacionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Habitación con id " + id + " no encontrada o eliminada"));
+                        "Habitación con id " + id + " no encontrada"));
     }
 }
