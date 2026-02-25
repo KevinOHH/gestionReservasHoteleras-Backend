@@ -34,7 +34,7 @@ public class HabitacionServiceImpl implements HabitacionService {
         if (request.precio() == null || request.precio().compareTo(BigDecimal.ZERO) <= 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio debe ser mayor a 0");
 
-        if (request.tipo() == null)
+        if (request.tipoHabitacion() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo de habitación es obligatorio");
 
         
@@ -77,7 +77,7 @@ public class HabitacionServiceImpl implements HabitacionService {
         if (request.precio() == null || request.precio().compareTo(BigDecimal.ZERO) <= 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio debe ser mayor a 0");
 
-        if (request.tipo() == null)
+        if (request.tipoHabitacion() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo de habitación es obligatorio");
 
        
