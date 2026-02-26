@@ -4,6 +4,7 @@ import com.hotel.mvc.dto.HabitacionRequest;
 import com.hotel.mvc.dto.HabitacionResponse;
 import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
+import com.hotel.mvc.enums.EstadoRegistro;
 import com.hotel.mvc.mapper.HabitacionMapper;
 import com.hotel.mvc.repository.HabitacionRepository;
 import lombok.RequiredArgsConstructor;
@@ -108,6 +109,31 @@ public class HabitacionServiceImpl implements HabitacionService {
         habitacion.setEstadoHabitacion(EstadoHabitacion.LIMPIEZA);
         habitacionRepository.save(habitacion);
     }
+    
+    
+    
+    public HabitacionResponse cambiarEstado(Long id, EstadoRegistro nuevoEstado)
+    {
+    	Habitacion habitacion = habitacionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
+    			
+    		    EstadoHabitacion estado;
+    		    try {
+    		        estado = EstadoHabitacion.valueOf(nuevoEstado.toString());
+    		    } catch (IllegalArgumentException e) {
+    		        throw new RuntimeException("Estado inválido. Debe ser ACTIVO o ELIMINADO");
+    		    }
+
+    		    
+    		    habitacion.setEstadoHabitacion(estado);
+
+    		    
+    		    Habitacion habitacionActualizada = habitacionRepository.save(habitacion);
+
+    		    
+    		    return habitacionMapper.toResponse(habitacionActualizada);
+    			
+    }
 
     // ── Helper ────────────────────────────────────────────────────────────────
 
@@ -116,4 +142,6 @@ public class HabitacionServiceImpl implements HabitacionService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Habitación con id " + id + " no encontrada"));
     }
+    
+    
 }
