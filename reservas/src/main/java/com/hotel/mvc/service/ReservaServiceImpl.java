@@ -70,9 +70,9 @@ public class ReservaServiceImpl implements ReservaService {
 	public ReservaResponse registrar(ReservaRequest request) {
 		log.info("Registrando nueva reservacion {}", request);
 		
-		//FALTAN VALIDACIONES
-		//validarHuespedActivo(request.idHuesped());
-		//validarHabitacionActivaDisponible(request.idHabitacion());
+		if (!request.fechaEntrada().isBefore(request.fechaSalida())) {
+	        throw new EntidadRelacionadaExeception("La fecha de entrada debe ser anterior a la de salida.");
+	    }
 		
 		validarHabitacionSinReservaActivas(request.idHabitacion());
 		
@@ -93,16 +93,33 @@ public class ReservaServiceImpl implements ReservaService {
 		Reserva reserva = getReservaOrThrow(id);
 		log.info("Actualizando reserva: {}", reserva.getId());
 		
+		if (reserva.getEstadoReserva() == EstadoReserva.CANCELADA || reserva.getEstadoReserva() == EstadoReserva.FINALIZADA) {
+			throw new EntidadRelacionadaExeception("No se puede modificar una reserva FINALIZADA O CANCELADA");
+		}
+		
+		if (!request.fechaEntrada().isBefore(request.fechaSalida())) {
+	        throw new EntidadRelacionadaExeception("La fecha de entrada debe ser anterior a la de salida.");
+	    }
+		
+		if (reserva.getEstadoReserva() == EstadoReserva.CONFIRMADA) {
+			reservaMapper.updateEntityFromRequest(request, reserva);
+		}
+		
+		if (reserva.getEstadoReserva() == EstadoReserva.EN_CURSO) {
+			validarRestriccionesEnCurso(reserva, request);
+			reserva.setFechaSalida(request.fechaSalida());
+		}
 		//EstadoReserva estadoNuevo = EstadoReserva.fromCodigo(request.idEstadoReserva());
 		
-		////HuespedResponse huesped = getHuespedResponse(request.idHuesped());
+		HuespedResponse huesped = getHuespedResponse(request.idHuesped());
 		///////HabitacionResponse habitacion = getHabitacionResponse(idHabitacionNueva);
-		////HabitacionResponse habitacion = getHabitacionResponse(request.idHabitacion());
+		HabitacionResponse habitacion = getHabitacionResponse(request.idHabitacion());
 		
+		reservaRepository.save(reserva);
 		
 		log.info("Reserva actualizada exitosamente: {}", reserva);
 		//return reservaMapper.entityToResponse(reserva, huesped, habitacion);
-		return reservaMapper.entityToResponse(reserva, null, null);
+		return reservaMapper.entityToResponse(reserva, huesped, habitacion);
 	}
 
 	@Override
@@ -111,10 +128,16 @@ public class ReservaServiceImpl implements ReservaService {
 		
 		log.info("Eliminando reserva con id: {}", id);
 		
+		if (reserva.getEstadoReserva() == EstadoReserva.EN_CURSO) {
+			throw new NoSuchElementException("No se puede eliminar una reservación " +
+					EstadoReserva.EN_CURSO.getDescripcion()); 
+		}
+		
+		aplicarReglaDisponibilidadHabitacion(reserva.getIdHabitacion(), EstadoReserva.CANCELADA, reserva.getId());
+		
 		reserva.setEstadoRegistro(EstadoRegistro.ELIMINADO);
 		
 		log.info("Reserva con id {} ha sido marcada como eliminada", id);
-		
 	}
 	
 	private Reserva getReservaOrThrow(Long id) {
@@ -139,27 +162,6 @@ public class ReservaServiceImpl implements ReservaService {
 	private HabitacionResponse getHabitacionResponseSinEstado(Long idHabitacion) {
 		return habitacionClient.obtenerHabitacionPorIdSinEstado(idHabitacion);
 	}
-	/*
-	private void validarHuespedActivo(Long idHuesped) {
-		boolean huespedActivo = reservaRepository.existsByIdHuespedAndEstadoRegistro(
-				idHuesped,
-				EstadoRegistro.ACTIVO);
-		
-		if (huespedActivo) {
-			throw new IllegalStateException("El huesped no está ACTIVO");
-		}
-	}
-	
-	private void validarHabitacionActivaDisponible(Long idHabitacion) {
-		boolean noEstaDisponible = reservaRepository.existsByIdHabitacionAndEstadoRegistroAndEstadoHabitacionIn(
-				idHabitacion, 
-				EstadoRegistro.ACTIVO, 
-				List.of(EstadoHabitacion.OCUPADA, EstadoHabitacion.MANTENIMIENTO, EstadoHabitacion.LIMPIEZA));
-		
-		if (noEstaDisponible) {
-			throw new IllegalStateException("La habitacion no está disponible");
-		}
-	}*/
 	
 	private void validarHabitacionSinReservaActivas(Long idHabitacion) {
 		boolean tieneReservaActiva = reservaRepository.existsByIdHabitacionAndEstadoRegistroAndEstadoReservaIn(
@@ -168,18 +170,9 @@ public class ReservaServiceImpl implements ReservaService {
 				List.of(EstadoReserva.CONFIRMADA, EstadoReserva.EN_CURSO));
 		
 		if (tieneReservaActiva) {
-			throw new IllegalStateException("La habitacion ya tiene una reservación activa CONFIRMADA o EN_CURSO");
+			throw new EntidadRelacionadaExeception("La habitacion ya tiene una reservación activa CONFIRMADA o EN_CURSO");
 		}
 	}
-	/*
-	private HabitacionResponse getHabitacionResponse(Long idHabitacion) {
-		return habitacionClient.obtenerHabitacionPorId(idHabitacion);
-	}
-	
-	private HabitacionResponse getHabitacionResponseSinEstado(Long idHabitacion) {
-		return habitacionClient.obtenerHabitacionPorIdSinEstado(idHabitacion);
-	}
-	*/
 	
 	private void aplicarReglaDisponibilidadHabitacion(Long idHabitacion, EstadoReserva nuevoEstadoReserva, Long idReservaActual) {
 	    EstadoHabitacion nuevaDisponibilidad = switch (nuevoEstadoReserva) {
@@ -222,7 +215,7 @@ public class ReservaServiceImpl implements ReservaService {
 		};
 		
 		if (!esValido) {
-	        throw new NoSuchElementException("Transición de estado no permitida: de " + estadoReservaActual.getDescripcion() + " a " + estadoReservaNuevo.getDescripcion());
+	        throw new EntidadRelacionadaExeception("Transición de estado no permitida: de " + estadoReservaActual.getDescripcion() + " a " + estadoReservaNuevo.getDescripcion());
 	    }
 	}
 
@@ -257,5 +250,14 @@ public class ReservaServiceImpl implements ReservaService {
 		if (tieneOtrasReservacionoesActivas) {
 			throw new EntidadRelacionadaExeception("La habitación tiene otras reservaciones pendientes o en curso.");
 		}
+	}
+	
+	private void validarRestriccionesEnCurso(Reserva actual, ReservaRequest request) {
+	    if (!actual.getFechaEntrada().isEqual(request.fechaEntrada())) {
+	        throw new IllegalArgumentException("En estado EN_CURSO no se puede modificar la fecha de entrada.");
+	    }
+	    if (!actual.getIdHabitacion().equals(request.idHabitacion())) {
+	        throw new IllegalArgumentException("En estado EN_CURSO no se puede cambiar de habitación.");
+	    }
 	}
 }
