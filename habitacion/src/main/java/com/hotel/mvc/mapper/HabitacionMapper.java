@@ -4,6 +4,8 @@ import com.hotel.mvc.dto.HabitacionRequest;
 import com.hotel.mvc.dto.HabitacionResponse;
 import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
+
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +15,7 @@ public class HabitacionMapper {
     public Habitacion toEntity(HabitacionRequest request) {
         return Habitacion.builder()
                 .numero(request.numero())                
-                .tipo(request.tipo())
+                .tipo(request.tipoHabitacion())
                 .precio(request.precio())
                 .capacidad(request.capacidad())
                 .estadoHabitacion(EstadoHabitacion.DISPONIBLE) 
@@ -35,7 +37,7 @@ public class HabitacionMapper {
     
     public void updateEntity(Habitacion habitacion, HabitacionRequest request) {
         habitacion.setNumero(request.numero());
-        habitacion.setTipo(request.tipo());
+        habitacion.setTipo(request.tipoHabitacion());
         habitacion.setPrecio(request.precio());
         habitacion.setCapacidad(request.capacidad());
        

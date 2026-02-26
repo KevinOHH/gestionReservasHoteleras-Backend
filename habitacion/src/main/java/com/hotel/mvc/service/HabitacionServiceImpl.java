@@ -43,7 +43,7 @@ public class HabitacionServiceImpl implements HabitacionService {
         if (request.precio() == null || request.precio().compareTo(BigDecimal.ZERO) <= 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio debe ser mayor a 0");
 
-        if (request.tipo() == null)
+        if (request.tipoHabitacion() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo de habitación es obligatorio");
 
         
@@ -87,7 +87,7 @@ public class HabitacionServiceImpl implements HabitacionService {
         if (request.precio() == null || request.precio().compareTo(BigDecimal.ZERO) <= 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio debe ser mayor a 0");
 
-        if (request.tipo() == null)
+        if (request.tipoHabitacion() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El tipo de habitación es obligatorio");
 
        
@@ -126,6 +126,30 @@ public class HabitacionServiceImpl implements HabitacionService {
 	                .orElseThrow(() -> new ResourceNotFoundException("Habitación con id " + id + " no encontrada"))
 	        );
 	}
+    
+    
+    public HabitacionResponse cambiarEstado(Long id, EstadoHabitacion nuevoEstado)
+    {
+    	Habitacion habitacion = habitacionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));
+    			
+    		    EstadoHabitacion estado;
+    		    try {
+    		        estado = EstadoHabitacion.valueOf(nuevoEstado.toString());
+    		    } catch (IllegalArgumentException e) {
+    		        throw new RuntimeException("Estado inválido. Debe ser ACTIVO o ELIMINADO");
+    		    }
+
+    		    
+    		    habitacion.setEstadoHabitacion(estado);
+
+    		    
+    		    Habitacion habitacionActualizada = habitacionRepository.save(habitacion);
+
+    		    
+    		    return habitacionMapper.toResponse(habitacionActualizada);
+    			
+    }
 
     // ── Helper ────────────────────────────────────────────────────────────────
 

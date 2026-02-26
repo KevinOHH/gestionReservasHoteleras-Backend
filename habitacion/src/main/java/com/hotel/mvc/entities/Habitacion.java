@@ -36,7 +36,7 @@ public class Habitacion {
     private Integer numero; 
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private TipoHabitacion tipo;
 
     @Column(nullable = false, precision = 10, scale = 2)

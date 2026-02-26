@@ -8,13 +8,14 @@ import jakarta.validation.constraints.*;
 
 public record HabitacionRequest(
 
-        @NotNull(message = "El número es obligatorio")
-        @Max(value = 50, message = "El número no puede exceder 3 digitos")
-        Integer numero,
+		@NotNull(message = "El número es obligatorio")
+		@Digits(integer = 5, fraction = 0, message = "El número no puede exceder 5 dígitos")
+		@Positive(message = "El número debe ser positivo")
+		Integer numero,
 
-        @NotNull(message = "El tipo es obligatorio")
-        //@Pattern(regexp = "SENCILLA|DOBLE|SUITE", message = "El tipo debe ser SENCILLA, DOBLE o SUITE")
-        TipoHabitacion tipo,
+        @NotBlank(message = "El tipo es obligatorio")
+        @Pattern(regexp = "INDIVIDUAL|DOBLE|SUITE", message = "El tipo debe ser INDIVIDUAL , DOBLE o SUITE")
+        TipoHabitacion tipoHabitacion,
 
         @NotNull(message = "El precio es obligatorio")
         @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
