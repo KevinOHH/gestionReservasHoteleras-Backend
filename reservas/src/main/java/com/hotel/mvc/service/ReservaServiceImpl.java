@@ -180,7 +180,7 @@ public class ReservaServiceImpl implements ReservaService {
 	        case FINALIZADA, CANCELADA -> EstadoHabitacion.DISPONIBLE;
 	    };
 
-	    log.info("Reserva en estado {}, cambiando habitacion {} a: {}", 
+	    log.info("Reserva en estado {}, cambiando habitacion con id {} a: {}", 
 	    		nuevoEstadoReserva, idHabitacion, nuevaDisponibilidad.getDescripcion());
 	    
 	    habitacionClient.actualizarDisponibilidad(idHabitacion, nuevaDisponibilidad.getCodigo(), idReservaActual);

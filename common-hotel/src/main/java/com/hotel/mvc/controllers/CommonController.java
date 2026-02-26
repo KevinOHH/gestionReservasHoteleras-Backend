@@ -2,15 +2,18 @@ package com.hotel.mvc.controllers;
 
 import com.hotel.mvc.services.CrudService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+//@RestController
 @AllArgsConstructor
+@Validated
 public class CommonController<RQ, RS, S extends CrudService<RQ, RS>> {
 
     protected final S service;
@@ -21,24 +24,24 @@ public class CommonController<RQ, RS, S extends CrudService<RQ, RS>> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RS> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<RS> obtenerPorId(@PathVariable @Positive(message = "El Id debe ser positivo") Long id) {
         return ResponseEntity.ok(service.obtenerPorId(id));
     }
 
     @PostMapping
-    public ResponseEntity<RS> registrar(@Valid @RequestBody RQ request) {
+    public ResponseEntity<RS> registrar(@Validated @RequestBody RQ request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.registrar(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RS> actualizar(
-            @PathVariable Long id,
-            @Valid @RequestBody RQ request) {
+            @PathVariable @Positive(message = "El Id debe ser positivo") Long id,
+            @Validated @RequestBody RQ request) {
         return ResponseEntity.ok(service.actualizar(request, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable @Positive(message = "El Id debe ser positivo") Long id) {
         service.eliminar(id);
         return ResponseEntity.noContent().build();
     }

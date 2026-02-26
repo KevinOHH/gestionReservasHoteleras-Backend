@@ -13,7 +13,7 @@ import com.hotel.mvc.dto.ReservaResponse;
 import com.hotel.mvc.service.ReservaService;
 
 @RestController
-@RequestMapping("/api/reservas")
+//@RequestMapping("/api/reservas")
 public class ReservaController extends CommonController<ReservaRequest, ReservaResponse, ReservaService> {
 
 	public ReservaController (ReservaService service) {
