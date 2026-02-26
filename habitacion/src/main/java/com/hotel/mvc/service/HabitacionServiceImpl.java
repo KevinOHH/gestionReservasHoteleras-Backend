@@ -4,7 +4,6 @@ import com.hotel.mvc.dto.HabitacionRequest;
 import com.hotel.mvc.dto.HabitacionResponse;
 import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
-import com.hotel.mvc.enums.EstadoRegistro;
 import com.hotel.mvc.mapper.HabitacionMapper;
 import com.hotel.mvc.repository.HabitacionRepository;
 import lombok.RequiredArgsConstructor;
@@ -112,7 +111,7 @@ public class HabitacionServiceImpl implements HabitacionService {
     
     
     
-    public HabitacionResponse cambiarEstado(Long id, EstadoRegistro nuevoEstado)
+    public HabitacionResponse cambiarEstado(Long id, EstadoHabitacion nuevoEstado)
     {
     	Habitacion habitacion = habitacionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Habitación no encontrada"));

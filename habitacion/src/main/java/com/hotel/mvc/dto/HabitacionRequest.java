@@ -15,7 +15,7 @@ public record HabitacionRequest(
 
         @NotBlank(message = "El tipo es obligatorio")
         @Pattern(regexp = "INDIVIDUAL|DOBLE|SUITE", message = "El tipo debe ser INDIVIDUAL , DOBLE o SUITE")
-        String tipoHabitacion,
+        TipoHabitacion tipoHabitacion,
 
         @NotNull(message = "El precio es obligatorio")
         @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")

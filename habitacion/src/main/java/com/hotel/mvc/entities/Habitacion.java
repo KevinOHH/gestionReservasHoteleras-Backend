@@ -3,7 +3,6 @@ package com.hotel.mvc.entities;
 import java.math.BigDecimal;
 
 import com.hotel.mvc.enums.EstadoHabitacion;
-import com.hotel.mvc.enums.EstadoRegistro;
 import com.hotel.mvc.enums.TipoHabitacion;
 
 import jakarta.persistence.Column;
@@ -49,8 +48,7 @@ public class Habitacion {
     @Column(name = "estado_habitacion", nullable = false)
     private EstadoHabitacion estadoHabitacion;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name = "estado_registro", nullable = false)
-    private EstadoRegistro estadoRegistro;
+    @Column(name = "estado0", nullable = false)
+    private String estado;
     
 }
