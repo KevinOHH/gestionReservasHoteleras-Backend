@@ -2,6 +2,8 @@ package com.hotel.mvc.dto.habitacion;
 
 import java.math.BigDecimal;
 
+import com.hotel.mvc.enums.TipoHabitacion;
+
 import jakarta.validation.constraints.*;
 
 public record HabitacionRequest(
@@ -10,9 +12,8 @@ public record HabitacionRequest(
         @Size(max = 5, message = "El número no puede exceder 5 caracteres")
         String numero,
 
-        @NotBlank(message = "El tipo es obligatorio")
-        @Pattern(regexp = "SENCILLA|DOBLE|SUITE", message = "El tipo debe ser SENCILLA, DOBLE o SUITE")
-        String tipo,
+        @NotNull(message = "El tipo es obligatorio")
+        TipoHabitacion tipoHabitacion,
 
         @NotNull(message = "El precio es obligatorio")
         @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")

@@ -31,24 +31,24 @@ public class Habitacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name= "numero" ,nullable = false, unique = true)
     private Integer numero; 
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
-    private TipoHabitacion tipo;
+    @Column(name = "tipo", nullable = false, length = 10)
+    private TipoHabitacion tipoHabitacion;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(name = "precio",nullable = false, precision = 10, scale = 2)
     private BigDecimal precio;
 
-    @Column(nullable = false)
+    @Column(name = "capacidad",nullable = false)
     private Integer capacidad;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_habitacion", nullable = false)
     private EstadoHabitacion estadoHabitacion;
     
-    @Column(name = "estado0", nullable = false)
+    @Column(name = "estado", nullable = false)
     private String estado;
     
 }

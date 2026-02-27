@@ -8,7 +8,7 @@ import com.hotel.mvc.enums.TipoHabitacion;
 public record HabitacionResponse(
 		Long id,
         Integer numero,                 
-        TipoHabitacion tipo,
+        TipoHabitacion tipoHabitacion,
         BigDecimal precio,
         Integer capacidad,
         EstadoHabitacion estadoHabitacion

@@ -44,7 +44,7 @@ public class HabitacionServiceImpl implements HabitacionService {
 
         Habitacion habitacion = habitacionMapper.toEntity(request);
 
-        
+        habitacion.setEstado("ACTIVO");
         habitacion.setEstadoHabitacion(EstadoHabitacion.DISPONIBLE);
 
         return habitacionMapper.toResponse(habitacionRepository.save(habitacion));
