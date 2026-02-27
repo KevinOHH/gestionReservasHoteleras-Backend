@@ -2,21 +2,18 @@ package com.hotel.mvc.dto.habitacion;
 
 import java.math.BigDecimal;
 
-import com.hotel.mvc.enums.TipoHabitacion;
-
 import jakarta.validation.constraints.*;
 
 public record HabitacionRequest(
 
-        @NotNull(message = "El número es obligatorio")
-        @Max(value = 50, message = "El número no puede exceder 3 digitos")
-        Integer numero,
+        @NotBlank(message = "El número es obligatorio")
+        @Size(max = 5, message = "El número no puede exceder 5 caracteres")
+        String numero,
 
-        @NotNull(message = "El tipo es obligatorio")
-        //@Pattern(regexp = "SENCILLA|DOBLE|SUITE", message = "El tipo debe ser SENCILLA, DOBLE o SUITE")
-        //String tipo,
-        TipoHabitacion tipo,
-        
+        @NotBlank(message = "El tipo es obligatorio")
+        @Pattern(regexp = "SENCILLA|DOBLE|SUITE", message = "El tipo debe ser SENCILLA, DOBLE o SUITE")
+        String tipo,
+
         @NotNull(message = "El precio es obligatorio")
         @DecimalMin(value = "0.01", message = "El precio debe ser mayor a 0")
         BigDecimal precio,
