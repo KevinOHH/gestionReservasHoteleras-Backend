@@ -114,7 +114,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Se desactiva CSRF para API REST
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration corsConfiguration = new CorsConfiguration();
-                corsConfiguration.setAllowedOrigins(List.of("http://localhost:52580"));
+                corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
                 corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                 corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                 corsConfiguration.setAllowCredentials(true);

@@ -6,6 +6,7 @@ import com.hotel.mvc.enums.TipoHabitacion;
 
 public record DatosHabitacion(
 	
+		Long id,
 		Integer numero,
 		//String tipo,
 		TipoHabitacion tipo,
