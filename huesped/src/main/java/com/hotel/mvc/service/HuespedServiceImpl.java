@@ -1,4 +1,4 @@
-package com.hotel.mvc.service;
+ package com.hotel.mvc.service;
 
 import com.hotel.mvc.dto.HuespedRequest;
 import com.hotel.mvc.dto.HuespedResponse;

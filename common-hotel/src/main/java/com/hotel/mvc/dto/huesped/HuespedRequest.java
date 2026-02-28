@@ -24,7 +24,7 @@ public record HuespedRequest(
         String telefono,
 
         @NotBlank(message = "El documento es obligatorio")
-        String tipodocumento,
+        String documento,
 
         @NotBlank(message = "La nacionalidad es obligatoria")
         String nacionalidad

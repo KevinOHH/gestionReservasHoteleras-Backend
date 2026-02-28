@@ -11,7 +11,7 @@ spring:
         webflux:
           routes:
 
-            # Authorization Server
+            # Authorization Server 
             #- id: auth
               #uri: http://localhost:9001
               #predicates:
@@ -22,32 +22,24 @@ spring:
               uri: lb://usuario
               predicates:
                 - Path=/api/usuarios/**
-              filters:
-                - StripPrefix=2
 
             # Microservicio Huesped (puerto 8082)
             - id: huesped
               uri: lb://huesped
               predicates:
                 - Path=/api/huespedes/**
-              filters:
-                - StripPrefix=2
 
             # Microservicio Habitaciones (puerto 8085)
             - id: habitacion
               uri: lb://habitacion
               predicates:
                 - Path=/api/habitaciones/**
-              filters:
-                - StripPrefix=2
 
-            # Microservicio Reservas (puerto 8085)
+            # Microservicio Reservas (puerto 8086)
             - id: reservas
               uri: lb://reservas
               predicates:
                 - Path=/api/reservas/**
-              filters:
-                - StripPrefix=2
 
     loadbalancer:
       enabled: true

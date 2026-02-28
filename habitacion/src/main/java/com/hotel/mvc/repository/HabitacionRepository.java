@@ -4,7 +4,6 @@ import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
 import com.hotel.mvc.enums.EstadoRegistro;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequestMapping("/api/huespedes")
+@RequestMapping("/api/huespedes")
 public class HuespedController extends CommonController<HuespedRequest, HuespedResponse, HuespedService> {
 
     public HuespedController(HuespedService service) {
