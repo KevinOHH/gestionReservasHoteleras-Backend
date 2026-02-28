@@ -80,6 +80,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
 		if (huesped == null) return null;
 		
 		return new DatosHuesped(
+				huesped.id(),
 				huesped.nombre(),
 				huesped.email(),
 				huesped.telefono(),
@@ -92,6 +93,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
 		if (habitacion == null) return null;
 		
 		return new DatosHabitacion(
+				habitacion.id(),
 				habitacion.numero(),
 				habitacion.tipo(),
 				habitacion.precio(),
