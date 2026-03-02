@@ -44,11 +44,16 @@ public class HuespedServiceImpl implements HuespedService {
     }
     
     @Override
-    public List<HuespedResponse> listar() {
-        return huespedRepository.findAllByEstado(EstadoRegistro.ACTIVO)
+    public List<HuespedResponse> listarTodos() {
+        return huespedRepository.findAll()
                 .stream()
                 .map(huespedMapper::toResponse)
                 .toList();
+    }
+    
+    @Override
+    public List<HuespedResponse> listar() {
+        return listarTodos();
     }
 
     @Override

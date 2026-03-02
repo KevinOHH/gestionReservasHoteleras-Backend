@@ -4,6 +4,9 @@ import com.hotel.mvc.controllers.CommonController;
 import com.hotel.mvc.dto.HuespedRequest;
 import com.hotel.mvc.dto.HuespedResponse;
 import com.hotel.mvc.service.HuespedService;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +16,17 @@ public class HuespedController extends CommonController<HuespedRequest, HuespedR
 
     public HuespedController(HuespedService service) {
         super(service);
+    }
+    
+    @Override
+    @GetMapping
+    public ResponseEntity<List<HuespedResponse>> listar() {
+    	return ResponseEntity.ok(((HuespedService) service).listarTodos());
+    }
+    
+    @GetMapping("/todos")
+    public ResponseEntity<List<HuespedResponse>> listarTodos() {
+        return ResponseEntity.ok(((HuespedService) service).listarTodos());
     }
 
     @GetMapping("/id-huesped/{id}")
