@@ -100,27 +100,24 @@ public class SecurityConfig {
      * - Configura CORS para permitir peticiones desde Angular (localhost:4200)
      * - Configura la aplicación como Resource Server usando JWT
      */
-    @Bean 
+    @Bean
     @Order(2)
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
-            throws Exception {
-
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((authorize) -> authorize
+            .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/login").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                // Todo lo demás se valida con @PreAuthorize en cada controller
                 .anyRequest().authenticated()
             )
-            .csrf(csrf -> csrf.disable()) // Se desactiva CSRF para API REST
+            .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(request -> {
-                CorsConfiguration corsConfiguration = new CorsConfiguration();
-                corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
-                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-                corsConfiguration.setAllowCredentials(true);
-                return corsConfiguration;
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(List.of("http://localhost:4200"));
+                config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+                config.setAllowCredentials(true);
+                return config;
             }))
-            // Configura la app como Resource Server que valida JWT
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt ->
                 jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
 

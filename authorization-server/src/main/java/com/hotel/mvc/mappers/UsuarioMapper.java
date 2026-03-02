@@ -2,9 +2,7 @@ package com.hotel.mvc.mappers;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
-
 import com.hotel.mvc.dto.UsuarioRequest;
 import com.hotel.mvc.dto.UsuarioResponse;
 import com.hotel.mvc.entities.Rol;
@@ -16,10 +14,12 @@ public class UsuarioMapper {
     public UsuarioResponse entityToResponse(Usuario usuario) {
         if (usuario == null) return null;
         return new UsuarioResponse(
+                usuario.getId(),
                 usuario.getUsername(),
                 usuario.getRoles().stream()
                         .map(Rol::getNombre)
-                        .collect(Collectors.toSet())
+                        .collect(Collectors.toSet()),
+                usuario.getEstadoRegistro()
         );
     }
 
@@ -29,6 +29,7 @@ public class UsuarioMapper {
         usuario.setUsername(request.username());
         usuario.setPassword(password);
         usuario.setRoles(roles);
+        usuario.setEstadoRegistro("ACTIVO");
         return usuario;
     }
 }

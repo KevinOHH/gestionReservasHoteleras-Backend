@@ -1,22 +1,16 @@
 package com.hotel.mvc.controllers;
 
-import java.util.Set;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.hotel.mvc.dto.UsuarioRequest;
 import com.hotel.mvc.dto.UsuarioResponse;
 import com.hotel.mvc.services.UsuarioService;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/usuarios")
@@ -25,18 +19,40 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    // 🔒 Solo ADMIN puede ver usuarios
     @GetMapping
-    public ResponseEntity<Set<UsuarioResponse>> listar() {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<UsuarioResponse>> listar() {
         return ResponseEntity.ok(usuarioService.listar());
     }
 
-    @PostMapping
-    public ResponseEntity<UsuarioResponse> registrar(@Valid @RequestBody UsuarioRequest request) {
-        return ResponseEntity.ok(usuarioService.registrar(request));
+    // 🔒 Solo ADMIN puede ver usuario por id
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UsuarioResponse> obtenerPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.obtenerPorId(id));
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<UsuarioResponse> eliminar(@PathVariable String username) {
-        return ResponseEntity.ok(usuarioService.eliminar(username));
+    // 🔒 Solo ADMIN puede crear usuarios
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UsuarioResponse> registrar(@Valid @RequestBody UsuarioRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.registrar(request));
+    }
+
+    // 🔒 Solo ADMIN puede editar usuarios
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UsuarioResponse> actualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody UsuarioRequest request) {
+        return ResponseEntity.ok(usuarioService.actualizar(id, request));
+    }
+
+    // 🔒 Solo ADMIN puede eliminar usuarios
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UsuarioResponse> eliminar(@PathVariable Long id) {
+        return ResponseEntity.ok(usuarioService.eliminar(id));
     }
 }
