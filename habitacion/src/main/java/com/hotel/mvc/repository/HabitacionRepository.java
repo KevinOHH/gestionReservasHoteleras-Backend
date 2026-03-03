@@ -13,14 +13,14 @@ public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
 
     
     //List<Habitacion> findAllByEstadoHabitacion(EstadoHabitacion estadoHabitacion);
-    List<Habitacion> findAllByEstado(EstadoRegistro estado);
+    List<Habitacion> findAllByEstadoRegistro(EstadoRegistro estado);
     List<Habitacion> findAllByEstadoHabitacion(EstadoHabitacion estadoHabitacion);
     
     List<Habitacion> findByEstadoRegistro(EstadoRegistro estadoRegistro);
     
-    Boolean existsByNumeroHabitacionAndEstadoRegistro(Integer numero, EstadoRegistro estadoRegistro);
+    Boolean existsByNumeroAndEstadoRegistro(Integer numero, EstadoRegistro estadoRegistro);
     
-    Boolean existsByNumeroHabitacionAndEstadoRegistroAndIdNot(Integer numero, EstadoRegistro estadoRegistro, Long id);
+    Boolean existsByNumeroAndEstadoRegistroAndIdNot(Integer numero, EstadoRegistro estadoRegistro, Long id);
     
     Optional<Habitacion> findByIdAndEstadoRegistro(Long id, EstadoRegistro estadoRegistro);
 

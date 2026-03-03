@@ -11,36 +11,47 @@ import org.springframework.stereotype.Component;
 @Component
 public class HabitacionMapper implements CommonMapper <HabitacionRequest, HabitacionResponse, Habitacion> {
 
-    public Habitacion toEntity(HabitacionRequest request) {
-        return Habitacion.builder()
-                .numero(request.numero())                
-                .tipo(request.tipoHabitacion())
-                .precio(request.precio())
-                .capacidad(request.capacidad())
-                .estadoHabitacion(EstadoHabitacion.DISPONIBLE)
-                .estado(EstadoRegistro.ACTIVO)
-                .build();
+    
+    public void updateEntity(Habitacion habitacion, HabitacionRequest request) {
+        
+       
     }
 
-    
-    public HabitacionResponse toResponse(Habitacion habitacion) {
-        return new HabitacionResponse(
+
+	@Override
+	public HabitacionResponse entityToResponse(Habitacion habitacion) {
+		return new HabitacionResponse(
         		habitacion.getId(),
                 habitacion.getNumero(),           
-                habitacion.getTipo(),
+                habitacion.getTipoHabitacion(),
                 habitacion.getPrecio(),
                 habitacion.getCapacidad(),
                 habitacion.getEstadoHabitacion(),
-                habitacion.getEstado()
+                habitacion.getEstadoRegistro()
         );
-    }
+	}
 
-    
-    public void updateEntity(Habitacion habitacion, HabitacionRequest request) {
-        habitacion.setNumero(request.numero());
-        habitacion.setTipo(request.tipoHabitacion());
+
+	@Override
+	public Habitacion requestToEntity(HabitacionRequest request) {
+		return Habitacion.builder()
+                .numero(request.numero())                
+                .tipoHabitacion(request.tipoHabitacion())
+                .precio(request.precio())
+                .capacidad(request.capacidad())
+                .estadoHabitacion(EstadoHabitacion.DISPONIBLE)
+                .estadoRegistro(EstadoRegistro.ACTIVO)
+                .build();
+	}
+
+
+	@Override
+	public Habitacion updateEntityFromRequest(HabitacionRequest request, Habitacion habitacion) {
+		habitacion.setNumero(request.numero());
+        habitacion.setTipoHabitacion(request.tipoHabitacion());
         habitacion.setPrecio(request.precio());
         habitacion.setCapacidad(request.capacidad());
-       
-    }
+        
+        return habitacion;
+	}
 }
