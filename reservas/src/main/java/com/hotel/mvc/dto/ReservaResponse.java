@@ -17,6 +17,6 @@ public record ReservaResponse(
 		LocalDateTime fechaEntrada,
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
 		LocalDateTime fechaSalida,
-		String estadoReserva
-		
+		String estadoReserva,
+		String estadoRegistro
 ) {}

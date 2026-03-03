@@ -3,6 +3,7 @@ package com.hotel.mvc.dto;
 import java.math.BigDecimal;
 
 import com.hotel.mvc.enums.EstadoHabitacion;
+import com.hotel.mvc.enums.EstadoRegistro;
 import com.hotel.mvc.enums.TipoHabitacion;
 
 public record HabitacionResponse(
@@ -11,5 +12,6 @@ public record HabitacionResponse(
         TipoHabitacion tipo,
         BigDecimal precio,
         Integer capacidad,
-        EstadoHabitacion estadoHabitacion
+        EstadoHabitacion estadoHabitacion,
+        EstadoRegistro estado
 ) {}

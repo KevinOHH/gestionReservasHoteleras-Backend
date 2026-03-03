@@ -41,7 +41,8 @@ public class ReservaServiceImpl implements ReservaService {
     @Transactional(readOnly = true)
 	public List<ReservaResponse> listar() {
 		log.info("Listado de todas las reservas activas solicitado");
-		return reservaRepository.findByEstadoRegistro(EstadoRegistro.ACTIVO).stream()
+		//return reservaRepository.findByEstadoRegistro(EstadoRegistro.ACTIVO).stream()
+		return reservaRepository.findAll().stream()
 				.map(reserva -> reservaMapper.entityToResponse(
 						reserva,
 						//null,
@@ -128,9 +129,10 @@ public class ReservaServiceImpl implements ReservaService {
 		
 		log.info("Eliminando reserva con id: {}", id);
 		
-		if (reserva.getEstadoReserva() == EstadoReserva.EN_CURSO) {
+		if (reserva.getEstadoReserva() == EstadoReserva.EN_CURSO ||
+				reserva.getEstadoReserva() == EstadoReserva.CONFIRMADA) {
 			throw new NoSuchElementException("No se puede eliminar una reservación " +
-					EstadoReserva.EN_CURSO.getDescripcion()); 
+					EstadoReserva.EN_CURSO.getDescripcion() + " o " + EstadoReserva.CONFIRMADA); 
 		}
 		
 		aplicarReglaDisponibilidadHabitacion(reserva.getIdHabitacion(), EstadoReserva.CANCELADA, reserva.getId());

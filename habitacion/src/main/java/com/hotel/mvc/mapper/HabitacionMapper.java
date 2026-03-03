@@ -4,7 +4,7 @@ import com.hotel.mvc.dto.HabitacionRequest;
 import com.hotel.mvc.dto.HabitacionResponse;
 import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
-
+import com.hotel.mvc.enums.EstadoRegistro;
 
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,8 @@ public class HabitacionMapper {
                 .tipo(request.tipoHabitacion())
                 .precio(request.precio())
                 .capacidad(request.capacidad())
-                .estadoHabitacion(EstadoHabitacion.DISPONIBLE) 
+                .estadoHabitacion(EstadoHabitacion.DISPONIBLE)
+                .estado(EstadoRegistro.ACTIVO)
                 .build();
     }
 
@@ -30,7 +31,8 @@ public class HabitacionMapper {
                 habitacion.getTipo(),
                 habitacion.getPrecio(),
                 habitacion.getCapacidad(),
-                habitacion.getEstadoHabitacion()           
+                habitacion.getEstadoHabitacion(),
+                habitacion.getEstado()
         );
     }
 
