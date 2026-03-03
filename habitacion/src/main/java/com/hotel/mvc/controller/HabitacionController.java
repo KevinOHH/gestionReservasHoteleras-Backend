@@ -40,7 +40,7 @@ public class HabitacionController extends CommonController<HabitacionRequest, Ha
     
 
     @PatchMapping("/{id}/estado/{estado}")
-    public ResponseEntity<HabitacionResponse> actualizarEstado(
+    public ResponseEntity<HabitacionResponse> cambiarEstado(
             @PathVariable Long id,
             @PathVariable EstadoHabitacion estado) {
 

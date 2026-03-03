@@ -9,7 +9,7 @@ import jakarta.validation.constraints.*;
 public record HabitacionRequest(
 
 		@NotNull(message = "El número es obligatorio")
-		@Digits(integer = 5, fraction = 0, message = "El número no puede exceder 5 dígitos")
+		@Min(value = 1, message = "El número de habitación debe ser mayor a 0")
 		@Positive(message = "El número debe ser positivo")
 		Integer numero,
 

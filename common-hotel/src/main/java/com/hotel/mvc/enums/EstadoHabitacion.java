@@ -39,4 +39,15 @@ public enum EstadoHabitacion {
     public boolean permiteCambioManualADisponible() {
         return this != OCUPADA;
     }
+    
+    public void validarCambio(EstadoHabitacion nuevoEstado) {
+        
+        if (this == OCUPADA && nuevoEstado == DISPONIBLE) {
+            throw new IllegalArgumentException("No se puede pasar de OCUPADA a DISPONIBLE directamente");
+        }
+        if (this == LIMPIEZA && nuevoEstado == OCUPADA) {
+            throw new IllegalArgumentException("No se puede asignar una habitación en limpieza a OCUPADA");
+        }
+        
+    }
 }

@@ -9,9 +9,8 @@ import com.hotel.mvc.enums.EstadoRegistro;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HabitacionMapper {
+public class HabitacionMapper implements CommonMapper <HabitacionRequest, HabitacionResponse, Habitacion> {
 
-   
     public Habitacion toEntity(HabitacionRequest request) {
         return Habitacion.builder()
                 .numero(request.numero())                
