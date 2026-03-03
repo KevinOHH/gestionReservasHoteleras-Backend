@@ -5,10 +5,14 @@ import com.hotel.mvc.dto.HabitacionResponse;
 import com.hotel.mvc.entities.Habitacion;
 import com.hotel.mvc.enums.EstadoHabitacion;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import com.hotel.mvc.enums.EstadoRegistro;
 =======
 
 >>>>>>> 7d838ab76056ace9464c77c456a43ded8354e0d6
+=======
+import com.hotel.mvc.enums.EstadoRegistro;
+>>>>>>> 03f6f9d96e242720617f02732a9723b996cab4a4
 
 import org.springframework.stereotype.Component;
 
@@ -68,7 +72,8 @@ public class HabitacionMapper implements CommonMapper <HabitacionRequest, Habita
                 .tipo(request.tipoHabitacion())
                 .precio(request.precio())
                 .capacidad(request.capacidad())
-                .estadoHabitacion(EstadoHabitacion.DISPONIBLE) 
+                .estadoHabitacion(EstadoHabitacion.DISPONIBLE)
+                .estado(EstadoRegistro.ACTIVO)
                 .build();
     }
 
@@ -80,7 +85,8 @@ public class HabitacionMapper implements CommonMapper <HabitacionRequest, Habita
                 habitacion.getTipo(),
                 habitacion.getPrecio(),
                 habitacion.getCapacidad(),
-                habitacion.getEstadoHabitacion()           
+                habitacion.getEstadoHabitacion(),
+                habitacion.getEstado()
         );
     }
 

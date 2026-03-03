@@ -13,8 +13,8 @@ public record HabitacionRequest(
 		@Positive(message = "El número debe ser positivo")
 		Integer numero,
 
-        @NotBlank(message = "El tipo es obligatorio")
-        @Pattern(regexp = "INDIVIDUAL|DOBLE|SUITE", message = "El tipo debe ser INDIVIDUAL , DOBLE o SUITE")
+        @NotNull(message = "El tipo es obligatorio")
+        //@Pattern(regexp = "INDIVIDUAL | DOBLE | SUITE", message = "El tipo debe ser INDIVIDUAL , DOBLE o SUITE")
         TipoHabitacion tipoHabitacion,
 
         @NotNull(message = "El precio es obligatorio")
