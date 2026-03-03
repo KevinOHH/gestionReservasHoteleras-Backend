@@ -33,8 +33,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional(readOnly = true)
     public List<UsuarioResponse> listar() {
-        log.info("Listando usuarios ACTIVOS");
-        return usuarioRepository.findAllByEstadoRegistro("ACTIVO")
+        log.info("Listando TODOS los usuarios");
+        return usuarioRepository.findAll()
                 .stream()
                 .map(usuarioMapper::entityToResponse)
                 .collect(Collectors.toList());

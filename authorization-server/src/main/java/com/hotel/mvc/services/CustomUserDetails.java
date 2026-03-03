@@ -27,7 +27,6 @@ public class CustomUserDetails implements UserDetailsService {
         Usuario usuario = usuarioRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
 
-        // ✅ Usuarios ELIMINADOS no pueden autenticarse
         if ("ELIMINADO".equals(usuario.getEstadoRegistro())) {
             throw new UsernameNotFoundException("Usuario desactivado: " + username);
         }

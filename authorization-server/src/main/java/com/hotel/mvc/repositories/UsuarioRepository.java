@@ -9,6 +9,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByUsername(String username);
 
     // Buscar solo ACTIVOS
+    List<Usuario> findAll(); 
+    
     Optional<Usuario> findByIdAndEstadoRegistro(Long id, String estadoRegistro);
     List<Usuario> findAllByEstadoRegistro(String estadoRegistro);
 
