@@ -142,6 +142,23 @@ public class ReservaServiceImpl implements ReservaService {
 		log.info("Reserva con id {} ha sido marcada como eliminada", id);
 	}
 	
+	// ReservaServiceImpl.java
+	@Override
+	public void huespedTieneReservasConfirmadasoEnCurso(Long idHuesped) {
+	    boolean tieneReservasActivas = reservaRepository
+	        .existsByIdHuespedAndEstadoRegistroAndEstadoReservaIn(
+	            idHuesped,
+	            EstadoRegistro.ACTIVO,
+	            List.of(EstadoReserva.CONFIRMADA, EstadoReserva.EN_CURSO)
+	        );
+
+	    if (tieneReservasActivas) {
+	        throw new EntidadRelacionadaExeception(
+	            "No se puede eliminar el huésped porque tiene reservas CONFIRMADAS o EN_CURSO"
+	        );
+	    }
+	}
+	
 	private Reserva getReservaOrThrow(Long id) {
 		log.info("Buscando reserva activa con id: {}", id);
 		

@@ -20,6 +20,13 @@ public class ReservaController extends CommonController<ReservaRequest, ReservaR
 		super(service);
 	}
 	
+    @GetMapping("/id-huesped/{idHuesped}/reservas-activas")
+    public ResponseEntity<Void> huespedTieneReservasConfirmadasoEnCurso(
+            @PathVariable Long idHuesped) {
+        service.huespedTieneReservasConfirmadasoEnCurso(idHuesped);
+        return ResponseEntity.ok().build();
+    }
+	
 	@GetMapping("/id-habitacion/{idHabitacion}/reservas-activas")
 	public ResponseEntity<Void> habitacionTieneReservasConfirmadasoEnCurso(
             @PathVariable Long idHabitacion) {

@@ -11,4 +11,7 @@ public interface ReservaService extends CrudService<ReservaRequest, ReservaRespo
 	void habitacionTieneReservasConfirmadasoEnCurso(Long idHabitacion);
 	void habitacionTieneReservasConfirmadasoEnCursoSinReservaActual(Long idHabitacion, Long idReservacionActual);
 	
+	// ReservaService.java
+	void huespedTieneReservasConfirmadasoEnCurso(Long idHuesped);
+	
 }

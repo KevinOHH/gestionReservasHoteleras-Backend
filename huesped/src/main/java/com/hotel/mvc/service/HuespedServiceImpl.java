@@ -1,17 +1,17 @@
- package com.hotel.mvc.service;
+package com.hotel.mvc.service;
 
+import com.hotel.mvc.client.ReservaClient;
 import com.hotel.mvc.dto.HuespedRequest;
 import com.hotel.mvc.dto.HuespedResponse;
 import com.hotel.mvc.entities.Huesped;
 import com.hotel.mvc.enums.EstadoRegistro;
-import com.hotel.mvc.enums.TipoDocumento;
 import com.hotel.mvc.exceptions.ConflictException;
+import com.hotel.mvc.exceptions.NegocioException;
 import com.hotel.mvc.exceptions.ResourceNotFoundException;
 import com.hotel.mvc.mapper.HuespedMapper;
 import com.hotel.mvc.repository.HuespedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -20,6 +20,7 @@ public class HuespedServiceImpl implements HuespedService {
 
     private final HuespedRepository huespedRepository;
     private final HuespedMapper huespedMapper;
+    private final ReservaClient reservaClient;
 
     @Override
     public HuespedResponse registrar(HuespedRequest request) {
@@ -28,21 +29,6 @@ public class HuespedServiceImpl implements HuespedService {
         return huespedMapper.toResponse(huespedRepository.save(huesped));
     }
 
-
-    private void validarUnicidad(HuespedRequest request, Long idExcluir) {
-        if (idExcluir == null) {
-            if (huespedRepository.existsByEmailAndEstado(request.email(), EstadoRegistro.ACTIVO))
-                throw new ConflictException("Ya existe un huésped con ese email");
-            if (huespedRepository.existsByTelefonoAndEstado(request.telefono(), EstadoRegistro.ACTIVO))
-                throw new ConflictException("Ya existe un huésped con ese teléfono");
-        } else {
-            if (huespedRepository.existsByEmailAndEstadoAndIdNot(request.email(), EstadoRegistro.ACTIVO, idExcluir))
-                throw new ConflictException("Ya existe un huésped con ese email");
-            if (huespedRepository.existsByTelefonoAndEstadoAndIdNot(request.telefono(), EstadoRegistro.ACTIVO, idExcluir))
-                throw new ConflictException("Ya existe un huésped con ese teléfono");
-        }
-    }
-    
     @Override
     public List<HuespedResponse> listarTodos() {
         return huespedRepository.findAll()
@@ -50,7 +36,7 @@ public class HuespedServiceImpl implements HuespedService {
                 .map(huespedMapper::toResponse)
                 .toList();
     }
-    
+
     @Override
     public List<HuespedResponse> listar() {
         return listarTodos();
@@ -80,8 +66,25 @@ public class HuespedServiceImpl implements HuespedService {
     @Override
     public void eliminar(Long id) {
         Huesped huesped = getOrThrow(id);
+        reservaClient.huespedTieneConsultasConfirmadasEnCurso(id);
         huesped.setEstado(EstadoRegistro.ELIMINADO);
         huespedRepository.save(huesped);
+    }
+
+    // ------------------- MÉTODOS PRIVADOS -------------------
+
+    private void validarUnicidad(HuespedRequest request, Long idExcluir) {
+        if (idExcluir == null) {
+            if (huespedRepository.existsByEmailAndEstado(request.email(), EstadoRegistro.ACTIVO))
+                throw new ConflictException("Ya existe un huésped con ese email");
+            if (huespedRepository.existsByTelefonoAndEstado(request.telefono(), EstadoRegistro.ACTIVO))
+                throw new ConflictException("Ya existe un huésped con ese teléfono");
+        } else {
+            if (huespedRepository.existsByEmailAndEstadoAndIdNot(request.email(), EstadoRegistro.ACTIVO, idExcluir))
+                throw new ConflictException("Ya existe un huésped con ese email");
+            if (huespedRepository.existsByTelefonoAndEstadoAndIdNot(request.telefono(), EstadoRegistro.ACTIVO, idExcluir))
+                throw new ConflictException("Ya existe un huésped con ese teléfono");
+        }
     }
 
     private Huesped getOrThrow(Long id) {

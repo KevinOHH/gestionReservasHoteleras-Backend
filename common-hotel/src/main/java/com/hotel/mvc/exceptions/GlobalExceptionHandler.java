@@ -54,6 +54,13 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
                         mensaje.isEmpty() ? "Error de validación" : mensaje));
     }
+    
+ // En GlobalExceptionHandler.java — añade este método
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<ErrorResponse> handleNegocio(NegocioException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage()));
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {

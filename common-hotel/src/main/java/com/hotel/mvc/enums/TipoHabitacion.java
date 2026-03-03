@@ -2,7 +2,7 @@ package com.hotel.mvc.enums;
 
 public enum TipoHabitacion {
 
-    SENCILLA,
+    INDIVIDUAL,
     DOBLE,
     SUITE;
 
