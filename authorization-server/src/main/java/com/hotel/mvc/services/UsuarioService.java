@@ -4,13 +4,18 @@ import java.util.Set;
 
 import com.hotel.mvc.dto.UsuarioRequest;
 import com.hotel.mvc.dto.UsuarioResponse;
+import java.util.List;
 
 public interface UsuarioService {
 
-    Set<UsuarioResponse> listar();
+	List<UsuarioResponse> listar();
 
     UsuarioResponse registrar(UsuarioRequest request);
 
-    UsuarioResponse eliminar(String username);
+    UsuarioResponse eliminar(Long id);
+    
+    UsuarioResponse obtenerPorId(Long id);
+    
+    UsuarioResponse actualizar(Long id, UsuarioRequest request);
 }
 

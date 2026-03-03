@@ -27,8 +27,8 @@ public class HuespedMapper {
     public HuespedResponse toResponse(Huesped huesped) {
         return new HuespedResponse(
                 huesped.getId(),
-                huesped.getNombre(),
-                huesped.getApellido(),
+                huesped.getNombre(), 
+                huesped.getApellido(), 
                 huesped.getEmail(),
                 huesped.getTelefono(),
                 huesped.getDocumento().name(),

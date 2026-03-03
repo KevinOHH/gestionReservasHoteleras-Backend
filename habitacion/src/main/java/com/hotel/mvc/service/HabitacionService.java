@@ -6,6 +6,11 @@ import com.hotel.mvc.enums.EstadoHabitacion;
 import com.hotel.mvc.services.CrudService;
 
 public interface HabitacionService extends CrudService<HabitacionRequest, HabitacionResponse> {
+
+	HabitacionResponse findByHabitacionId(Long id);
+	
+	HabitacionResponse actualizarDisponibilidadHabitacion(Long idHabitacion, Long idDisponibilidad, Long idReservaActual);
+	
 	
 	HabitacionResponse obtenerPorIdSinEstado (Long id);
 	

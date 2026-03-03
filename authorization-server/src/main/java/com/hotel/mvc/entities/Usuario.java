@@ -32,6 +32,9 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_USUARIO")
     private Long id;
+    
+    @Column(name = "ESTADO_REGISTRO", nullable = false, length = 10)
+    private String estadoRegistro = "ACTIVO";
 
     @Column(name = "USERNAME", nullable = false, length = 20, unique = true)
     @NotBlank(message = "El username es requerido")

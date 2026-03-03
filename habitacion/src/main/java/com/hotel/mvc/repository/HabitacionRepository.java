@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
 
     
+    //List<Habitacion> findAllByEstadoHabitacion(EstadoHabitacion estadoHabitacion);
+    List<Habitacion> findAllByEstado(EstadoRegistro estado);
     List<Habitacion> findAllByEstadoHabitacion(EstadoHabitacion estadoHabitacion);
     
     List<Habitacion> findByEstadoRegistro(EstadoRegistro estadoRegistro);

@@ -59,14 +59,14 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
 	public Reserva updateEntityFromRequest(ReservaRequest request, Reserva entity) {
 		if (request == null || entity == null) return null;
 		
-		entity.setIdHuesped(request.idHuesped());
-		entity.setIdHabitacion(request.idHabitacion());
+		//entity.setIdHuesped(request.idHuesped());
+		//entity.setIdHabitacion(request.idHabitacion());
 		entity.setFechaEntrada(request.fechaEntrada());
 		entity.setFechaSalida(request.fechaSalida());
 		
 		return entity;
 	}
-	
+	/*
 	public Reserva updateEntityFromRequest(ReservaRequest request, Reserva entity, EstadoReserva estadoReserva) {
 		if (request == null || entity == null) return null;
 		
@@ -74,16 +74,17 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
 		entity.setEstadoReserva(estadoReserva);
 		
 		return entity;
-	}
+	}*/
 	
 	private DatosHuesped datosHuespedFromHuespedResponse(HuespedResponse huesped) {
 		if (huesped == null) return null;
 		
 		return new DatosHuesped(
+				huesped.id(),
 				huesped.nombre(),
 				huesped.email(),
 				huesped.telefono(),
-				huesped.documento(),
+				huesped.tipoDocumento(),
 				huesped.nacionalidad()
 				);
 	}
@@ -92,6 +93,7 @@ public class ReservaMapper implements CommonMapper<ReservaRequest, ReservaRespon
 		if (habitacion == null) return null;
 		
 		return new DatosHabitacion(
+				habitacion.id(),
 				habitacion.numero(),
 				habitacion.tipo(),
 				habitacion.precio(),

@@ -23,7 +23,7 @@ public record HuespedRequest(
         @Pattern(regexp = "\\d{10}", message = "El teléfono debe tener exactamente 10 dígitos")
         String telefono,
 
-        @NotBlank(message = "El documento es obligatorio")
+        @NotBlank(message = "El documento es obligatorio. Valores admitidos INE - PASAPORTE - LICENCIA")
         String tipoDocumento,
 
         @NotBlank(message = "La nacionalidad es obligatoria")

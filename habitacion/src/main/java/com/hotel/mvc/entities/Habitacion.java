@@ -3,6 +3,7 @@ package com.hotel.mvc.entities;
 import java.math.BigDecimal;
 
 import com.hotel.mvc.enums.EstadoHabitacion;
+import com.hotel.mvc.enums.EstadoRegistro;
 import com.hotel.mvc.enums.TipoHabitacion;
 import com.hotel.mvc.enums.EstadoRegistro;
 
@@ -35,6 +36,7 @@ public class Habitacion {
     @Column(name = "ID")
     private Long id;
 
+<<<<<<< HEAD
     @Column(name= "NUMERO" ,nullable = false)
     @Min(value = 1)
     private Integer numero; 
@@ -49,6 +51,19 @@ public class Habitacion {
 
     @Min(value = 1)
     @Column(name = "CAPACIDAD",nullable = false)
+=======
+    @Column(nullable = false, unique = true)
+    private Integer numero; 
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private TipoHabitacion tipo;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
+
+    @Column(nullable = false)
+>>>>>>> 7d838ab76056ace9464c77c456a43ded8354e0d6
     private Integer capacidad;
 
     @Enumerated(EnumType.STRING)
@@ -56,7 +71,12 @@ public class Habitacion {
     private EstadoHabitacion estadoHabitacion;
     
     @Enumerated(EnumType.STRING)
+<<<<<<< HEAD
     @Column(name = "ESTADO", nullable = false)
     private EstadoRegistro estadoRegistro;
     
+=======
+    @Column(name = "estado", nullable = false)
+    private EstadoRegistro estado;
+>>>>>>> 7d838ab76056ace9464c77c456a43ded8354e0d6
 }
