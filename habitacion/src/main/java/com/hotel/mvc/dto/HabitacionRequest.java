@@ -2,7 +2,6 @@ package com.hotel.mvc.dto;
 
 import java.math.BigDecimal;
 
-import com.hotel.mvc.enums.EstadoHabitacion;
 import com.hotel.mvc.enums.TipoHabitacion;
 
 import jakarta.validation.constraints.*;
@@ -10,7 +9,7 @@ import jakarta.validation.constraints.*;
 public record HabitacionRequest(
 
 		@NotNull(message = "El número es obligatorio")
-		@Digits(integer = 5, fraction = 0, message = "El número no puede exceder 5 dígitos")
+		@Min(value = 1, message = "El número de habitación debe ser mayor a 0")
 		@Positive(message = "El número debe ser positivo")
 		Integer numero,
 
@@ -23,9 +22,6 @@ public record HabitacionRequest(
         
         @NotNull(message = "La capacidad es obligatoria")
         @Min(value = 1, message = "La capacidad mínima es 1")
-        Integer capacidad,
-        
-        @NotNull(message= "El estado de la habitacion es requerido")
-		EstadoHabitacion estadoHabitacion
+        Integer capacidad
 
 ) {}

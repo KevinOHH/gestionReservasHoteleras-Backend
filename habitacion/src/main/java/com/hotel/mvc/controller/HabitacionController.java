@@ -22,7 +22,7 @@ public class HabitacionController extends
     }
 
     @PatchMapping("/{id}/estado/{estado}")
-    public ResponseEntity<HabitacionResponse> actualizarEstado(
+    public ResponseEntity<HabitacionResponse> cambiarEstado(
             @PathVariable Long id,
             @PathVariable EstadoHabitacion estado) {
 

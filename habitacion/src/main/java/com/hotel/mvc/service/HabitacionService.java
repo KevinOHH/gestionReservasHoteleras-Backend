@@ -7,5 +7,14 @@ import com.hotel.mvc.services.CrudService;
 
 public interface HabitacionService extends CrudService<HabitacionRequest, HabitacionResponse> {
 	
-	HabitacionResponse cambiarEstado(Long id, EstadoHabitacion estado);
+	HabitacionResponse obtenerPorIdSinEstado (Long id);
+	
+	//HabitacionResponse actualizarEstadoHabitacion(Long idHabitacion, Long idEstadoHabitacion);
+	
+	HabitacionResponse modificarEstadoHabitacion(Long idHabitacion, EstadoHabitacion idEstadoHabitacion);
+	
+	void cambiarHabitacion(Long idHabitacion, Long idHabitacionNuevo);
+	
+	void validarHabitacion(Long idHabitacion);
+	
 }

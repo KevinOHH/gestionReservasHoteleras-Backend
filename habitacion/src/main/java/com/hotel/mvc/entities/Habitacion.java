@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.hotel.mvc.enums.EstadoHabitacion;
 import com.hotel.mvc.enums.TipoHabitacion;
+import com.hotel.mvc.enums.EstadoRegistro;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,6 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "habitaciones")
+@Table(name = "HABITACIONES")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,26 +32,31 @@ public class Habitacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
-    @Column(name= "numero" ,nullable = false, unique = true)
+    @Column(name= "NUMERO" ,nullable = false)
+    @Min(value = 1)
     private Integer numero; 
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false, length = 10)
+    @Column(name = "TIPO", nullable = false)
     private TipoHabitacion tipoHabitacion;
 
-    @Column(name = "precio",nullable = false, precision = 10, scale = 2)
+    @Positive
+    @Column(name = "PRECIO",nullable = false)
     private BigDecimal precio;
 
-    @Column(name = "capacidad",nullable = false)
+    @Min(value = 1)
+    @Column(name = "CAPACIDAD",nullable = false)
     private Integer capacidad;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado_habitacion", nullable = false)
+    @Column(name = "ESTADO_HABITACION", nullable = false)
     private EstadoHabitacion estadoHabitacion;
     
-    @Column(name = "estado", nullable = false)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ESTADO", nullable = false)
+    private EstadoRegistro estadoRegistro;
     
 }
