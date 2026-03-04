@@ -18,13 +18,13 @@ public record ReservaRequest(
 	    @Positive(message = "El id de la habitacion debe ser positivo")
 	    Long idHabitacion,
 	    
-	    @NotNull(message = "La fecha de entrada (check-in) es requerida")
-		@FutureOrPresent(message = "La fecha de entrada (check-in) debe ser futura")
+	    @NotNull(message = "La fecha de entrada es requerida")
+		@FutureOrPresent(message = "La fecha de entrada debe ser futura")
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
 	    LocalDateTime fechaEntrada,
 	    
-	    @NotNull(message = "La fecha de salida (check-out) es requerida")
-		@FutureOrPresent(message = "La fecha de salida (check-out) debe ser futura")
+	    @NotNull(message = "La fecha de salida es requerida")
+		@FutureOrPresent(message = "La fecha de salida debe ser futura")
 		@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
 	    LocalDateTime fechaSalida,
 	    
